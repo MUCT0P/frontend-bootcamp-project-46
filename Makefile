@@ -5,7 +5,7 @@ gendiff:
 	node bin/gendiff.js
 	
 test:
-	npx jest
+	npx jest --coverage
 
 lint:
 	npx eslint .
