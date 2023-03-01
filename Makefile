@@ -5,7 +5,7 @@ gendiff:
 	node bin/gendiff.js
 	
 test:
-	npx test 
+	npm test 
 
 lint:
 	npx eslint .
