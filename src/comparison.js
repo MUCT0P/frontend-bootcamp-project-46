@@ -1,47 +1,51 @@
 import _ from 'lodash';
 
-const comparison = (obj1, obj2) => {
-  const keys1 = _.keys(obj1);
-  const keys2 = _.keys(obj2);
-  const sortedKeys = _.sortBy(_.union(keys1, keys2));
+const getObjectKeys = (obj) => _.keys(obj);
 
-  const result = sortedKeys.map((key) => {
-    if (!_.has(obj1, key)) {
-      return {
-        key,
-        value: obj2[key],
-        type: 'added',
-      };
+const sortKeys = (keys) => _.sortBy(keys);
+
+const getUniqueKeys = (keys1, keys2) => _.union(keys1, keys2);
+
+const isObject = (val) => _.isObject(val);
+
+const getType = (obj1, obj2, key) => {
+  if (!_.has(obj1, key)) {
+    return 'added';
+  }
+  if (!_.has(obj2, key)) {
+    return 'deleted';
+  }
+  if (isObject(obj1[key]) && isObject(obj2[key])) {
+    return 'nested';
+  }
+  if (obj1[key] !== obj2[key]) {
+    return 'changed';
+  }
+  return 'unchanged';
+};
+
+const comparison = (obj1, obj2) => {
+  const keys1 = getObjectKeys(obj1);
+  const keys2 = getObjectKeys(obj2);
+  const sortedKeys = sortKeys(getUniqueKeys(keys1, keys2));
+
+  const compareValues = (key) => {
+    const type = getType(obj1, obj2, key);
+    switch (type) {
+      case 'added':
+        return { key, value: obj2[key], type };
+      case 'deleted':
+        return { key, value: obj1[key], type };
+      case 'nested':
+        return { key, type, children: comparison(obj1[key], obj2[key]) };
+      case 'changed':
+        return { key, valueBefore: obj1[key], valueAfter: obj2[key], type };
+      default:
+        return { key, value: obj1[key], type };
     }
-    if (!_.has(obj2, key)) {
-      return {
-        key,
-        value: obj1[key],
-        type: 'deleted',
-      };
-    }
-    if (_.isObject(obj1[key]) && _.isObject(obj2[key])) {
-      return {
-        key,
-        type: 'nested',
-        children: comparison(obj1[key], obj2[key]),
-      };
-    }
-    if (obj1[key] !== obj2[key]) {
-      return {
-        key,
-        valueBefore: obj1[key],
-        valueAfter: obj2[key],
-        type: 'changed',
-      };
-    }
-    return {
-      key,
-      value: obj1[key],
-      type: 'unchanged',
-    };
-  });
-  return result;
+  };
+
+  return sortedKeys.map(compareValues);
 };
 
 export default comparison;
