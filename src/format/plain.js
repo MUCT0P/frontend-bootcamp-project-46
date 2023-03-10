@@ -25,4 +25,4 @@ const getPlainFormat = (value, parent = '') => {
   }
 };
 
-export default (plain) => `${plain.map((element) => getPlainFormat(element)).join('\n')}`;
+export default (plain) => `${plain.map((element) => getPlainFormat(element)).join('\n').slice(0, -1)}`;
