@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "type": "module",
-  "description": "[![Actions Status](https://github.com/MUCT0P/frontend-bootcamp-project-46/workflows/hexlet-check/badge.svg)](https://github.com/MUCT0P/frontend-bootcamp-project-46/actions)",
+  "description": "A tool for generating differences between two configuration files",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint .",
@@ -42,3 +42,4 @@
     }
   }
 }
+

@@ -39,9 +39,7 @@ const comparison = (obj1, obj2) => {
       case 'nested':
         return { key, type, children: comparison(obj1[key], obj2[key]) };
       case 'changed':
-        return {
-          key, valueBefore: obj1[key], valueAfter: obj2[key], type,
-        };
+        return { key, valueBefore: obj1[key], valueAfter: obj2[key], type };
       default:
         return { key, value: obj1[key], type };
     }
