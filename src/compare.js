@@ -24,7 +24,7 @@ const getType = (obj1, obj2, key) => {
   return 'unchanged';
 };
 
-const comparison = (obj1, obj2) => {
+const compare = (obj1, obj2) => {
   const keys1 = getObjectKeys(obj1);
   const keys2 = getObjectKeys(obj2);
   const sortedKeys = sortKeys(getUniqueKeys(keys1, keys2));
@@ -37,7 +37,7 @@ const comparison = (obj1, obj2) => {
       case 'deleted':
         return { key, value: obj1[key], type };
       case 'nested':
-        return { key, type, children: comparison(obj1[key], obj2[key]) };
+        return { key, type, children: compare(obj1[key], obj2[key]) };
       case 'changed':
         return {
           key, valueBefore: obj1[key], valueAfter: obj2[key], type,
@@ -50,4 +50,4 @@ const comparison = (obj1, obj2) => {
   return sortedKeys.map(compareValues);
 };
 
-export default comparison;
+export default compare;

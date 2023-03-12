@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import comparison from './comparison.js';
+import compare from './compare.js';
 import format from './format/index.js';
 import parse from './parsers.js';
 
@@ -13,7 +13,7 @@ const genDiff = (file1, file2, formatName = 'stylish') => {
   const data2 = readFile(file2);
   const parsed1 = parse(data1, getFormat(file1));
   const parsed2 = parse(data2, getFormat(file2));
-  const data = comparison(parsed1, parsed2);
+  const data = compare(parsed1, parsed2);
 
   return format(data, formatName);
 };
